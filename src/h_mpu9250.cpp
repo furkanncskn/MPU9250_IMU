@@ -4,10 +4,10 @@
 #include <math.h>
 
 #define PUBLIC		
-#define PRIVATE					static
-#define SAMPLE_SIZE				200								/*! Konfigurasyon yaparken toplam yapilacak ornekleme sayisidir istege bagli degistirilebilir      */
+#define PRIVATE				static
+#define SAMPLE_SIZE			200				/*! Konfigurasyon yaparken toplam yapilacak ornekleme sayisidir istege bagli degistirilebilir      */
 #define GYRO_SENSIVITY			MPU9250_GYRO_SENSIVITY_250DPS	/*! Eger sensivity degistirilecekse buraya istenen makro yazilmali ve init fonksiyonu duzenlenmeli */
-#define ACCEL_SENSIVITY 		MPU9250_ACCEL_SENSIVITY_2G		/*! Eger sensivity degistirilecekse buraya istenen makro yazilmali ve init fonksiyonu duzenlenmeli */
+#define ACCEL_SENSIVITY 		MPU9250_ACCEL_SENSIVITY_2G	/*! Eger sensivity degistirilecekse buraya istenen makro yazilmali ve init fonksiyonu duzenlenmeli */
 
 /*!< Static functions prototypes */
 PRIVATE void MPU9250_requestBytes(uint8_t address, uint8_t subAddress, uint8_t bytes);
@@ -21,8 +21,8 @@ PRIVATE uint8_t i2c_read8RegisterByte(uint8_t deviceAddress, uint8_t registerAdd
  *          Who Am I register'i icerisinde ki default deger 0x71 olmalidir. 
  *  
  *  @return
- *			Basari durumunda '1'
- *			Basarisizlik durumunda '0'
+ *	    Basari durumunda '1'
+ *	    Basarisizlik durumunda '0'
  */
 PUBLIC int MPU9250_WhoAmI(void)
 {
@@ -47,14 +47,14 @@ PUBLIC void MPU9250_init(void)
     i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_PWR_MGMT_1, 0x01);                    /*!< Auto selects the best available clock source                             */
     i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_PWR_MGMT_1);                          /*!< Wait until it's written                                                  */
     
-	i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_GYRO_CONFIG, 0x00);                   /*!< Gyro Full Scale Select: 00 = +250 dps  Fchoice_b[1:0] = 0xb00            */
+	i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_GYRO_CONFIG, 0x00);               /*!< Gyro Full Scale Select: 00 = +250 dps  Fchoice_b[1:0] = 0xb00            */
     i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_GYRO_CONFIG);                         /*!< Wait until it's written                                                  */
 
     i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG, 0x00);                  /*!< Accel Full Scale Select: 00 = +-2 g                                      */
     i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG);                        /*!< Wait until it's written                                                  */
 
-	i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG_2, 0x08);                /*!< Accel BW = 460 Hz Rate = 1 kHz                                     	  */
-    i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG_2);                      /*!< Wait until it's written 												  */
+	i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG_2, 0x08);            /*!< Accel BW = 460 Hz Rate = 1 kHz                                           */
+    i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG_2);                      /*!< Wait until it's written 						      */
 }
 
 /*!
@@ -90,11 +90,11 @@ PUBLIC MPU9250_TypeDef* set_reg_accel(MPU9250_TypeDef* preg)
 }
 
 /*!
- * @brief   Gyroscope raw degerleri set edilir
+ * @brief  Gyroscope raw degerleri set edilir
  *
- *         	previous_time 	= bir onceki zaman
- * 		   	current_time 	= suan ki zaman 
- *			elapsed_time	= saniye cinsinden onceki ve simdi ki zamanin farki
+ *         previous_time   = bir onceki zaman
+ * 	   current_time    = suan ki zaman 
+ *	   elapsed_time	   = saniye cinsinden onceki ve simdi ki zamanin farki
  */
 PUBLIC MPU9250_TypeDef* set_reg_gyro(MPU9250_TypeDef* preg)
 {   
@@ -160,13 +160,13 @@ PUBLIC MPU9250_TypeDef* set_accel_deg_xyz(MPU9250_TypeDef* preg)
 }
 
 /*!
- * @brief   Derece cinsinden gyroscope'un x-y-z verileri elde edilir.
+ * @brief  Derece cinsinden gyroscope'un x-y-z verileri elde edilir.
  *
- *         	gyro_scale 		= gyroscope olceklemesi
- * 		   	elapsed_time 	= loop icerisinde bir gyroscope verisi 
- *						  	  okunana kadar gecen sure
- *		   	deg_(x-y-z)  	= derece cinsinden veriler
- * 			gxc, gyc, gzc	= gyroscope kalibrasyon degerleri
+ *         gyro_scale 		= gyroscope olceklemesi
+ *         elapsed_time 	= loop icerisinde bir gyroscope verisi 
+ *				  okunana kadar gecen sure
+ *         deg_(x-y-z)  	= derece cinsinden veriler
+ * 	   gxc, gyc, gzc	= gyroscope kalibrasyon degerleri
  */
 PUBLIC MPU9250_TypeDef* set_gyro_deg_xyz(MPU9250_TypeDef* preg)
 {
@@ -194,8 +194,8 @@ PUBLIC MPU9250_TypeDef* set_gyro_deg_xyz(MPU9250_TypeDef* preg)
 /*!
  * @brief   Santigrat cinsinden sicaklik elde edilir  
  *
- *			temp_scale 	= temperature sensivity LSB/C
- *			temp_offset = room temp offset LSB
+ *	    temp_scale  = temperature sensivity LSB/C
+ *	    temp_offset = room temp offset LSB
  */
 PUBLIC MPU9250_TypeDef* set_temp(MPU9250_TypeDef* preg)
 {
@@ -209,12 +209,12 @@ PUBLIC MPU9250_TypeDef* set_temp(MPU9250_TypeDef* preg)
     return preg;
 }
 
-void set_pitch(double pitch, MPU9250_TypeDef* preg)
+PUBLIC void set_pitch(double pitch, MPU9250_TypeDef* preg)
 {
     preg->pitch = pitch;
 }
 
-void set_roll(double roll, MPU9250_TypeDef* preg)
+PUBLIC void set_roll(double roll, MPU9250_TypeDef* preg)
 {
     preg->roll = roll;
 }
@@ -223,8 +223,8 @@ void set_roll(double roll, MPU9250_TypeDef* preg)
  * @brief   Accelerometer offset ayari yapilir  
  *          
  *          axs = accelerometer x simple 
- * 			ays = accelerometer y simple
- * 			azs = accelerometer z simple
+ * 	    ays = accelerometer y simple
+ * 	    azs = accelerometer z simple
  */
 PUBLIC MPU9250_TypeDef* calibration_accel(MPU9250_TypeDef* preg)
 {
@@ -250,9 +250,9 @@ PUBLIC MPU9250_TypeDef* calibration_accel(MPU9250_TypeDef* preg)
 /*!
  * @brief  Gyroscope offset ayari yapilir  
  *
- *		    gxs = gyroscope x simple 
- *		    gys = gyroscope y simple
- *		    gzs = gyroscope z simple 
+ *	   gxs = gyroscope x simple 
+ *	   gys = gyroscope y simple
+ *	   gzs = gyroscope z simple 
  */
 PUBLIC MPU9250_TypeDef* calibration_gyro(MPU9250_TypeDef* preg)
 {
@@ -282,7 +282,7 @@ PUBLIC MPU9250_TypeDef* calibration_gyro(MPU9250_TypeDef* preg)
  *          Bunu yaparken bir onceki deger ile suan ki degerin 
  *          ciktilarini alarak belirlenen bir orana gore cikti verir.
  *
- *			pre_a = previous accelerometer data
+ *	    pre_a = previous accelerometer data
  */
 PUBLIC void lowPassFilter(MPU9250_TypeDef* preg)
 {
@@ -353,9 +353,9 @@ PUBLIC double digitalSmooth(double rawIn, double *sensSmoothArray)
  * @brief   I2C ile bir adresten istenilen adette veri okunur.
  *
  * @param
- * 			address, registerindan deger okunacak cihazin i2c adresi
- * 			subAddress, okunmak istenen registerin adresi
- * 			bytes, kac byte okuma gerceklestirilecegini bilgisi
+ * 	    address, registerindan deger okunacak cihazin i2c adresi
+ * 	    subAddress, okunmak istenen registerin adresi
+ * 	    bytes, kac byte okuma gerceklestirilecegini bilgisi
  */
 PRIVATE void MPU9250_requestBytes(uint8_t address, uint8_t subAddress, uint8_t bytes)
 {
@@ -404,9 +404,9 @@ PRIVATE void i2c_writeRegisterByte(uint8_t deviceAddress, uint8_t registerAddres
 /*!
  *  @brief  Secilen registerdan 8 bitlik bir okuma gerceklestirir
  * 
- *	@return
- *	    	Basari durumunda okunan deger
- * 			Basarisizlik durumunda '0'
+ *  @return
+ *	    Basari durumunda okunan deger
+ * 	    Basarisizlik durumunda '0'
  */
 PRIVATE uint8_t i2c_read8RegisterByte(uint8_t deviceAddress, uint8_t registerAddress)
 {
