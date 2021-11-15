@@ -41,13 +41,12 @@
 #define SENSORS_RADS_TO_DPS               (57.295779513082320876798154814105F)         /*!< From deg to rad conversion                                               */
 #define EARTH_GRAVITY                     (9.800665F)                                  /*!< Earth's Gravity force value                                              */
 #define ALPHA 				  (0.05000F)				       /*!< Complementart filter rate 						     */								  							
-#define LOW_PASS_FILTER_RATE		  (0.90F)
+#define LOW_PASS_FILTER_RATE		  (0.90F)				       /*! low pass filter rate - can take different value			     */
 #define SMOOTH_FILTER_SAMPLES 		  (21)					       /*! must be > 3 and one-digit   					             */			
 
 /*!
- * Client kodlar yapinin elemanlarini degistirmemelidir 
- * Elemanlara yalnizca okuma amacli erisilmeli ve bu islem
- * getter fonksiyonlari ile yapilmalidir.
+ * Client kodlar yapinin elemanlarini dogrudan erismemelidir 
+ * Yapinin elemanlarina yalnizca uye fonksiyonlar ile erisim saglanmalidir
  */
 typedef struct									
 {
@@ -75,8 +74,8 @@ typedef struct
 	double 			last_deg_gx;
 	double 			last_deg_gy;
 	double 	 	 	elapsed_time;		
-	unsigned int 	current_time;
-	unsigned int 	previous_time;		
+	unsigned int 		current_time;
+	unsigned int 		previous_time;		
 	double 			pitch;
 	double 			roll;
 	double 			temp;
@@ -86,26 +85,26 @@ typedef struct
 /*!
  * Utility Function Prototypes 
  */
-int MPU9250_WhoAmI(void);							/*!< Dogru sensor mu konrol edilir 				*/
+int MPU9250_WhoAmI(void);							/*!< Is it the right sensor ?					*/
 void lowPassFilter(MPU9250_TypeDef* preg);	
-double digitalSmooth(double rawIn, double *sensSmoothArray);			/*!< Bir sensorden gelen veriler yumusatilir			*/
-MPU9250_TypeDef* calibration_accel(MPU9250_TypeDef* preg);			/*!< Accelerometer kalibrasyonu yapilir				*/
-MPU9250_TypeDef* calibration_gyro(MPU9250_TypeDef* preg); 			/*!< Gyroscope kalibrasyonu yapilir				*/
-MPU9250_TypeDef* complementary_filter(MPU9250_TypeDef* preg);			/*!< Accel ve Gyro verileri ile pitch-roll elde edilir	   	*/
+double digitalSmooth(double rawIn, double *sensSmoothArray);			/*!< A data from a sensor is smoothed				*/
+MPU9250_TypeDef* calibration_accel(MPU9250_TypeDef* preg);			/*!< Calibration accelerometer					*/
+MPU9250_TypeDef* calibration_gyro(MPU9250_TypeDef* preg); 			/*!< Calibration gyroscope					*/
+MPU9250_TypeDef* complementary_filter(MPU9250_TypeDef* preg);			/*!< Using accel and gyro data, pitch-roll data is set   	*/
 
 /*!
  * Set Functions Prototypes 
  */		
-void MPU9250_init(void);							/*!< Baslangic ayarlari yapilir 				*/
-MPU9250_TypeDef* set_reg_accel(MPU9250_TypeDef* preg);				/*!< Accelerometer degerleri set edilir 			*/
-MPU9250_TypeDef* set_reg_gyro(MPU9250_TypeDef* preg);				/*!< Gyroscope degerleri set edilir 				*/
-MPU9250_TypeDef* set_reg_temp(MPU9250_TypeDef* preg);				/*!< Temperature degerleri set edilir   			*/
-MPU9250_TypeDef* set_accel_deg_xyz(MPU9250_TypeDef* reg);			/*!< Accelerometer aci degerleri set edilir			*/	
-MPU9250_TypeDef* set_gyro_deg_xyz(MPU9250_TypeDef* reg);			/*!< Gyroscope aci degerleri set edilir				*/
-MPU9250_TypeDef* set_temp(MPU9250_TypeDef* preg);				/*!< Temperature verisi set edilir				*/
-void set_pitch(double pitch,MPU9250_TypeDef* preg);
-void set_roll(double roll, MPU9250_TypeDef* preg);
-
+void MPU9250_init(void);							/*!< To do the initial settings  				*/
+MPU9250_TypeDef* set_reg_accel(MPU9250_TypeDef* preg);				/*!< Accelerometer raw values are set				*/
+MPU9250_TypeDef* set_reg_gyro(MPU9250_TypeDef* preg);				/*!< Gyroscope raw values are set 				*/
+MPU9250_TypeDef* set_reg_temp(MPU9250_TypeDef* preg);				/*!< Temperature raw values are set		   		*/
+MPU9250_TypeDef* set_accel_deg_xyz(MPU9250_TypeDef* reg);			/*!< Accelerometer angle values are set				*/	
+MPU9250_TypeDef* set_gyro_deg_xyz(MPU9250_TypeDef* reg);			/*!< Gyroscope angle values are set				*/
+MPU9250_TypeDef* set_temp(MPU9250_TypeDef* preg);				/*!< Temperature values are set					*/
+void set_pitch(double pitch,MPU9250_TypeDef* preg);				/*!< Pitch value is set						*/
+void set_roll(double roll, MPU9250_TypeDef* preg);				/*!< Roll value is set						*/
+	
 /*!
  * Get Functions Prototypes 
  */
