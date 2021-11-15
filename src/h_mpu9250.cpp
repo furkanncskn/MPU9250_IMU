@@ -28,9 +28,9 @@ PUBLIC int MPU9250_WhoAmI(void)
 {
     uint8_t buff = i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_WHO_AM_I);
     if(buff == MPU9250_WHO_AM_I_VALUE)
-		return 1;
+	return 1;
 		
-	return 0;
+    return 0;
 }
 
 /*!
@@ -68,7 +68,7 @@ PUBLIC MPU9250_TypeDef* complementary_filter(MPU9250_TypeDef* preg)
     preg->last_pitch = preg->pitch;
     preg->last_roll = preg->roll;
 	
-	return preg;
+    return preg;
 }
 
 /*!
@@ -85,7 +85,7 @@ PUBLIC MPU9250_TypeDef* set_reg_accel(MPU9250_TypeDef* preg)
     preg->ay = MPU9250_uint8ToUint16(raw_data[3], raw_data[2]);
     preg->az = MPU9250_uint8ToUint16(raw_data[5], raw_data[4]);
 	
-	return preg;
+    return preg;
 }
 
 /*!
@@ -110,7 +110,7 @@ PUBLIC MPU9250_TypeDef* set_reg_gyro(MPU9250_TypeDef* preg)
     preg->gy = MPU9250_uint8ToUint16(raw_data[3], raw_data[2]);
     preg->gz = MPU9250_uint8ToUint16(raw_data[5], raw_data[4]);
 	
-	return preg;
+    return preg;
 }
 
 /*!
@@ -125,7 +125,7 @@ PUBLIC MPU9250_TypeDef* set_reg_temp(MPU9250_TypeDef* preg)
 
     preg->t = MPU9250_uint8ToUint16(raw_data[1], raw_data[0]);
 	
-	return preg;
+    return preg;
 }
 
 
@@ -176,18 +176,11 @@ PUBLIC MPU9250_TypeDef* set_gyro_deg_xyz(MPU9250_TypeDef* preg)
     gyro_xyz[1] = ((double)preg->gy - preg->gyc) / gyro_scale;
     gyro_xyz[2] = ((double)preg->gz - preg->gzc) / gyro_scale;
 
-    // Filtrelenmis gyro acilarini hesaplama
+    // Gyro acisini hesaplama
     preg->deg_gx = gyro_xyz[0] * preg->elapsed_time + preg->last_pitch;
     preg->deg_gy = gyro_xyz[1] * preg->elapsed_time + preg->last_roll;
-    
-    // Kayan gyro acilarini hesaplama
-    double unfiltered_gyro_angle_x = gyro_xyz[0] * preg->elapsed_time + preg->last_deg_gx;
-    double unfiltered_gyro_angle_y = gyro_xyz[1] * preg->elapsed_time + preg->last_deg_gy;
 
-    preg->last_deg_gx = unfiltered_gyro_angle_x;
-    preg->last_deg_gy = unfiltered_gyro_angle_y;
-
-	return preg;
+    return preg;
 }
 
 /*!
@@ -198,12 +191,12 @@ PUBLIC MPU9250_TypeDef* set_gyro_deg_xyz(MPU9250_TypeDef* preg)
  */
 PUBLIC MPU9250_TypeDef* set_temp(MPU9250_TypeDef* preg)
 {
-	set_reg_temp(preg);
-
-	static const float temp_scale 	= 333.87f;
+    set_reg_temp(preg);
+	
+    static const float temp_scale 	= 333.87f;
     static const float temp_offset 	= 21.0f;
 
-	preg->temp = ((((double)preg->t) - temp_offset) / temp_scale) + temp_offset;
+    preg->temp = ((((double)preg->t) - temp_offset) / temp_scale) + temp_offset;
 	
     return preg;
 }
@@ -227,23 +220,23 @@ PUBLIC void set_roll(double roll, MPU9250_TypeDef* preg)
  */
 PUBLIC MPU9250_TypeDef* calibration_accel(MPU9250_TypeDef* preg)
 {
-	double axs = 0;
-	double ays = 0;
-	double azs = 0;
+    double axs = 0;
+    double ays = 0;
+    double azs = 0;
 	
-	for(size_t i = 0; i < SAMPLE_SIZE; ++i) {
-		set_reg_accel(preg);
-		axs = ((double)preg->ax + axs) / (double)SAMPLE_SIZE;
-		ays = ((double)preg->ay + ays) / (double)SAMPLE_SIZE;
-		azs = ((double)preg->az + azs) / (double)SAMPLE_SIZE;
-		delay(20);
-	}
+    for(size_t i = 0; i < SAMPLE_SIZE; ++i) {
+	set_reg_accel(preg);
+	axs = ((double)preg->ax + axs) / (double)SAMPLE_SIZE;
+	ays = ((double)preg->ay + ays) / (double)SAMPLE_SIZE;
+	azs = ((double)preg->az + azs) / (double)SAMPLE_SIZE;
+	delay(20);
+    }
 	
-	preg->axc = axs;
-	preg->ayc = ays;
-	preg->azc = azs;
+    preg->axc = axs;
+    preg->ayc = ays;
+    preg->azc = azs;
 	
-	return preg;
+    return preg;
 }
 
 /*!
@@ -255,24 +248,23 @@ PUBLIC MPU9250_TypeDef* calibration_accel(MPU9250_TypeDef* preg)
  */
 PUBLIC MPU9250_TypeDef* calibration_gyro(MPU9250_TypeDef* preg)
 {
-	double gxs = 0;
-	double gys = 0;
-	double gzs = 0;
+    double gxs = 0;
+    double gys = 0;
+    double gzs = 0;
 	
-	for(size_t i = 0; i < SAMPLE_SIZE; ++i) {
-		set_reg_gyro(preg);
-		
-		gxs = ((double)preg->gx + gxs) / (double)SAMPLE_SIZE;
-		gys = ((double)preg->gy + gys) / (double)SAMPLE_SIZE;
-		gzs = ((double)preg->gz + gzs) / (double)SAMPLE_SIZE;
-		delay(20);
-	}
+    for(size_t i = 0; i < SAMPLE_SIZE; ++i) {
+	set_reg_gyro(preg);	
+	gxs = ((double)preg->gx + gxs) / (double)SAMPLE_SIZE;
+        gys = ((double)preg->gy + gys) / (double)SAMPLE_SIZE;
+	gzs = ((double)preg->gz + gzs) / (double)SAMPLE_SIZE;
+	delay(20);
+    }
 	
-	preg->gxc = gxs;
-	preg->gyc = gys;
-	preg->gzc = gzs;
+    preg->gxc = gxs;
+    preg->gyc = gys;
+    preg->gzc = gzs;
 	
-	return preg;
+    return preg;
 }
 
 /*!
@@ -285,15 +277,15 @@ PUBLIC MPU9250_TypeDef* calibration_gyro(MPU9250_TypeDef* preg)
  */
 PUBLIC void lowPassFilter(MPU9250_TypeDef* preg)
 {
-	static int16_t pre_a[3] = {0};
+    static int16_t pre_a[3] = {0};
 	
-	preg->ax = pre_a[0] * (LOW_PASS_FILTER_RATE) + preg->ax * (1 - LOW_PASS_FILTER_RATE);
-	preg->ay = pre_a[1] * (LOW_PASS_FILTER_RATE) + preg->ay * (1 - LOW_PASS_FILTER_RATE);
-	preg->az = pre_a[2] * (LOW_PASS_FILTER_RATE) + preg->az * (1 - LOW_PASS_FILTER_RATE);
+    preg->ax = pre_a[0] * (LOW_PASS_FILTER_RATE) + preg->ax * (1 - LOW_PASS_FILTER_RATE);
+    preg->ay = pre_a[1] * (LOW_PASS_FILTER_RATE) + preg->ay * (1 - LOW_PASS_FILTER_RATE);
+    preg->az = pre_a[2] * (LOW_PASS_FILTER_RATE) + preg->az * (1 - LOW_PASS_FILTER_RATE);
 	
-	pre_a[0] = preg->ax;
-	pre_a[1] = preg->ay;
-	pre_a[2] = preg->az;
+    pre_a[0] = preg->ax;
+    pre_a[1] = preg->ay;
+    pre_a[2] = preg->az;
 }
 
 /*!
@@ -429,31 +421,31 @@ PRIVATE uint8_t i2c_read8RegisterByte(uint8_t deviceAddress, uint8_t registerAdd
  */
 PUBLIC int16_t get_accel_raw_x(const MPU9250_TypeDef* preg)
 {
-	return preg->ax;
+    return preg->ax;
 }
 
 PUBLIC int16_t get_accel_raw_y(const MPU9250_TypeDef* preg)
 {
-	return preg->ay;
+    return preg->ay;
 }
 PUBLIC int16_t get_accel_raw_z(const MPU9250_TypeDef* preg)
 {
-	return preg->az;
+    return preg->az;
 }
 
 PUBLIC int16_t get_temp_raw(const MPU9250_TypeDef* preg)
 {
-	return preg->t;
+    return preg->t;
 }
 
 PUBLIC int16_t get_gyro_raw_x(const MPU9250_TypeDef* preg)
 {
-	return preg->gx;
+    return preg->gx;
 }
 
 PUBLIC int16_t get_gyro_raw_y(const MPU9250_TypeDef* preg)
 {
-	return preg->gy;
+    return preg->gy;
 }
 
 PUBLIC int16_t get_gyro_raw_z(const MPU9250_TypeDef* preg)
@@ -508,30 +500,30 @@ PUBLIC double get_temp(const MPU9250_TypeDef* preg)
 
 PUBLIC double  get_accel_cal_x(const MPU9250_TypeDef* preg)
 {
-	return preg->axc;
+    return preg->axc;
 }
 
 PUBLIC double  get_accel_cal_y(const MPU9250_TypeDef* preg)
 {
-	return preg->ayc;
+    return preg->ayc;
 }
 
 PUBLIC double  get_accel_cal_z(const MPU9250_TypeDef* preg)
 {
-	return preg->azc;
+    return preg->azc;
 }
 
 PUBLIC double  get_gyro_cal_x(const MPU9250_TypeDef* preg)
 {
-	return preg->gxc;
+    return preg->gxc;
 }
 
 PUBLIC double  get_gyro_cal_y(const MPU9250_TypeDef* preg)
 {
-	return preg->gyc;
+    return preg->gyc;
 }
 
 PUBLIC double  get_gyro_cal_z(const MPU9250_TypeDef* preg)
 {
-	return preg->gzc;
+    return preg->gzc;
 }
