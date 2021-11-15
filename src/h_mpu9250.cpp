@@ -47,19 +47,18 @@ PUBLIC void MPU9250_init(void)
     i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_PWR_MGMT_1, 0x01);                    /*!< Auto selects the best available clock source                             */
     i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_PWR_MGMT_1);                          /*!< Wait until it's written                                                  */
     
-	i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_GYRO_CONFIG, 0x00);               /*!< Gyro Full Scale Select: 00 = +250 dps  Fchoice_b[1:0] = 0xb00            */
+    i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_GYRO_CONFIG, 0x00);               	/*!< Gyro Full Scale Select: 00 = +250 dps  Fchoice_b[1:0] = 0xb00            */
     i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_GYRO_CONFIG);                         /*!< Wait until it's written                                                  */
 
     i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG, 0x00);                  /*!< Accel Full Scale Select: 00 = +-2 g                                      */
     i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG);                        /*!< Wait until it's written                                                  */
 
-	i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG_2, 0x08);            /*!< Accel BW = 460 Hz Rate = 1 kHz                                           */
+    i2c_writeRegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG_2, 0x08);           	/*!< Accel BW = 460 Hz Rate = 1 kHz                                           */
     i2c_read8RegisterByte(MPU9250_ADRESS, MPU9250_ACCEL_CONFIG_2);                      /*!< Wait until it's written 						      */
 }
 
 /*!
- * @brief   Gyro ve accel verileri birlestirilerek pitch-roll verileri elde edilir.
-
+ * @brief   Gyro ve accel verileri birlestirilerek pitch-roll verileri elde edilir
  */
 PUBLIC MPU9250_TypeDef* complementary_filter(MPU9250_TypeDef* preg)
 {
