@@ -69,13 +69,11 @@ typedef struct
 	double 	 	 	deg_gx;				/*!< Degree gyro  x	value	 */
 	double 	 	 	deg_gy;				/*!< Degree gyro  y	value	 */
 	double 	 	 	deg_gz;				/*!< Degree gyro  z	value	 */
-	double 			last_pitch;			
-	double 			last_roll;
-	double 			last_deg_gx;
-	double 			last_deg_gy;
 	double 	 	 	elapsed_time;		
 	unsigned int 		current_time;
-	unsigned int 		previous_time;		
+	unsigned int 		previous_time;	
+	double 			last_pitch;			
+	double 			last_roll;
 	double 			pitch;
 	double 			roll;
 	double 			temp;
