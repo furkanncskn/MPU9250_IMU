@@ -62,11 +62,11 @@ PUBLIC void MPU9250_init(void)
  */
 PUBLIC MPU9250_TypeDef* complementary_filter(MPU9250_TypeDef* preg)
 {
-    preg->pitch = (1.0f - ALPHA) * preg->deg_gx + ALPHA * preg->deg_ax;
-    preg->roll = (1.0f - ALPHA) * preg->deg_gy + ALPHA * preg->deg_ay;
+    preg->pitch = (1.0f - ALPHA) * (preg->deg_gx + preg->last_roll) + ALPHA * preg->deg_ax;
+    preg->roll = (1.0f - ALPHA) * (preg->deg_gy + preg->last_pitch) ALPHA * preg->deg_ay;
 
-    preg->last_pitch = preg->pitch;
-    preg->last_roll = preg->roll;
+    preg->last_roll = preg->pitch;
+    preg->last_pitch = preg->roll;
 	
     return preg;
 }
@@ -169,16 +169,11 @@ PUBLIC MPU9250_TypeDef* set_accel_deg_xyz(MPU9250_TypeDef* preg)
  */
 PUBLIC MPU9250_TypeDef* set_gyro_deg_xyz(MPU9250_TypeDef* preg)
 {
-    double gyro_scale = GYRO_SENSIVITY;
-    double gyro_xyz[3] = {0};
+    double period = 1 / preg->elapsed_time;
 
-    gyro_xyz[0] = ((double)preg->gx - preg->gxc) / gyro_scale;
-    gyro_xyz[1] = ((double)preg->gy - preg->gyc) / gyro_scale;
-    gyro_xyz[2] = ((double)preg->gz - preg->gzc) / gyro_scale;
-
-    // Gyro acisini hesaplama
-    preg->deg_gx = gyro_xyz[0] * preg->elapsed_time + preg->last_pitch;
-    preg->deg_gy = gyro_xyz[1] * preg->elapsed_time + preg->last_roll;
+    preg->deg_gx = ((double)preg->gx - preg->gxc) / GYRO_SENSIVITY / period;
+    preg->deg_gy = ((double)preg->gy - preg->gyc) / GYRO_SENSIVITY / period;
+    preg->deg_gz = ((double)preg->gz - preg->gzc) / GYRO_SENSIVITY / period;
 
     return preg;
 }
