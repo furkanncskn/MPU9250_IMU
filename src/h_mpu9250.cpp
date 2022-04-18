@@ -62,11 +62,11 @@ PUBLIC void MPU9250_init(void)
  */
 PUBLIC MPU9250_TypeDef* complementary_filter(MPU9250_TypeDef* preg)
 {
-    preg->pitch = (1.0f - ALPHA) * (preg->deg_gx + preg->last_roll) + ALPHA * preg->deg_ax;
-    preg->roll = (1.0f - ALPHA) * (preg->deg_gy + preg->last_pitch) ALPHA * preg->deg_ay;
+    preg->roll = (1.0f - ALPHA) * (preg->deg_gx + preg->last_roll) + ALPHA * preg->deg_ax;
+    preg->pitch = (1.0f - ALPHA) * (preg->deg_gy + preg->last_pitch) ALPHA * preg->deg_ay;
 
-    preg->last_roll = preg->pitch;
-    preg->last_pitch = preg->roll;
+    preg->last_roll = preg->roll;
+    preg->last_pitch = preg->pitch;
 	
     return preg;
 }
